@@ -3,11 +3,12 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Address;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Patients>
  */
-class PatientsFactory extends Factory
+class PatientFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,8 +17,14 @@ class PatientsFactory extends Factory
      */
     public function definition(): array
     {
+        $address = Address::all('id');
+
         return [
-            //
+            'address_id' => $address->random()->id,
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'birth' => fake()->date(),
+            'phone' => fake()->phoneNumber(),
         ];
     }
 }
