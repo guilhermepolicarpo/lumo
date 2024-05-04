@@ -2,7 +2,7 @@
     <!-- HEADER -->
     <x-header title="Adicionar assistido" progress-indicator />
 
-    <x-card class="max-w-6xl">
+    <x-card>
         <x-form wire:submit="save">
 
             {{-- Basic section --}}

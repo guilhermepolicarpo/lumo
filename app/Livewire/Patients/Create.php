@@ -9,6 +9,7 @@ use Livewire\Component;
 use Livewire\Attributes\Title;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 
@@ -36,31 +37,38 @@ class Create extends Component
 
     public function save(): void
     {
-
         $validatedData = $this->validate();
 
-        if (!empty($this->address && $this->address['zip_code'] !== '')) {
-            $addressCreated = Address::create($validatedData['address']);
+        $addressData = $validatedData['address'] ?? null;
+        $patientData = $validatedData['patient'] ?? null;
 
-            if (!$addressCreated) {
-                $this->error("Ocorreu um erro.", "Não foi possível adicionar o endereço do paciente {$this->name}.");
-                return;
+        try {
+            DB::beginTransaction();
+
+            $address = null;
+            if (!empty($addressData) && $addressData['zip_code'] !== '') {
+                $address = Address::create($addressData);
+                if (!$address) {
+                    throw new \Exception("Não foi possível adicionar o endereço do assistido {$this->name}.");
+                }
             }
-        }
 
-        if (isset($addressCreated)) {
-            $patientCreated = $addressCreated->patient()->create($validatedData['patient']);
-        } else {
-            $patientCreated = Patient::create($validatedData['patient']);
-        }
+            $patient = $address ? $address->patient()->create($patientData) : Patient::create($patientData);
+            if (!$patient) {
+                throw new \Exception("Não foi possível adicionar o assistido {$this->name}.");
+            }
 
-        if (!$patientCreated) {
-            $this->error("Ocorreu um erro.", "Não foi possível adicionar o paciente {$this->name}.");
-            return;
-        }
+            DB::commit();
 
-        $this->success('Assistido adicionado.', description: "O assistido $patientCreated->name foi adicionado.", redirectTo: route('patients.index'));
+            $this->success('Assistido adicionado.', description: "O assistido {$patient->name} foi adicionado.", redirectTo: route('patients.index'));
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $this->error("Ocorreu um erro.", $e->getMessage());
+        }
     }
+
 
 
     public function rules(): array
