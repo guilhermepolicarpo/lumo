@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(20)->create();
-        Address::factory(1400)->create();
-        Patient::factory(1400)->create();
+        Patient::factory(1039)->create();
     }
 }

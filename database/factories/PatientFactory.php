@@ -17,10 +17,10 @@ class PatientFactory extends Factory
      */
     public function definition(): array
     {
-        $address = Address::all('id');
+        // $address = Address::all('id');
 
         return [
-            'address_id' => $address->random()->id,
+            'address_id' => Address::factory(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'birth' => fake()->date(),
