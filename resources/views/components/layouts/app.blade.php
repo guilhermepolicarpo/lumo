@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon/favicon.svg') }}">
 
     <title>{{ isset($title) ? $title.' | '.config('app.name') : config('app.name') }}</title>
 
@@ -57,7 +58,7 @@
 
                 <x-menu-item title="Agendamento" icon="o-calendar" link="#" />
 
-                <x-menu-item title="Assistidos" icon="o-users" link="#" />
+                <x-menu-item title="Assistidos" icon="o-users" link="{{ route('patients.index') }}" />
 
                 <x-menu-sub title="Gestão" icon="o-cog-6-tooth">
                     <x-menu-item title="Centro Espírita" icon="o-home" />
@@ -80,7 +81,7 @@
         </x-slot:sidebar>
 
         {{-- The `$slot` goes here --}}
-        <x-slot:content>
+        <x-slot:content class="max-w-7xl">
             {{ $slot }}
         </x-slot:content>
     </x-main>

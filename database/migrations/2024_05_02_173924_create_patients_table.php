@@ -13,18 +13,15 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('address_id')->nullable();
+            $table->foreignId('address_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('phone', 20)->nullable();
-            $table->date('birth')->nullable();
+            $table->string('phone', 20);
+            $table->date('birth');
             $table->timestamps();
 
             // Indexes
             $table->index('address_id');
-
-            // Foreign keys
-            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
         });
     }
 

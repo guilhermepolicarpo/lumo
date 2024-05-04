@@ -2,7 +2,7 @@
     <!-- HEADER -->
     <x-header title="Adicionar usuário" progress-indicator />
 
-    <x-card>
+    <x-card class="max-w-4xl">
         <x-form wire:submit="save">
             <div class="grid gap-5 md:grid-cols-2">
                 <x-input label="Nome" wire:model="name" icon="o-user" placeholder="Digite o nome" />
