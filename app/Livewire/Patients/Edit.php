@@ -21,15 +21,17 @@ class Edit extends Component
     public array $addressState;
     public Collection $states;
 
+
     public function mount(): void
     {
         $this->patientState = $this->patient->toArray();
+
         if (!empty($this->patient->address)) {
             $this->addressState = $this->patient->address()->first()->toArray();
         }
         $this->states = $this->states();
-
     }
+
 
     public function render()
     {
@@ -44,28 +46,35 @@ class Edit extends Component
         $addressData = $validatedData['addressState'] ?? null;
         $patientData = $validatedData['patientState'] ?? null;
 
-        $patient = Patient::findOrFail($this->patient->id);
-
         try {
             DB::beginTransaction();
 
-            if (!empty($addressData) && $addressData['zip_code'] !== '') {
-                if ($patient->address) {
-                    $patient->address->update($addressData);
+            if (
+                !empty($addressData['address']) ||
+                !empty($addressData['number']) ||
+                !empty($addressData['neighborhood']) ||
+                !empty($addressData['city']) ||
+                !empty($addressData['state']) ||
+                !empty($addressData['zip_code'])
+            ) {
+                if ($this->patient->address) {
+                    $address = $this->patient->address->update($addressData);
                 } else {
-                    $address = Address::create($addressData);
-                    if (!$address) {
-                        throw new \Exception("Não foi possível adicionar o endereço do assistido {$patient->name}.");
-                    }
-                    $patient->address()->associate($address);
+                    $address = $this->patient->address()->create($addressData);
+                    $this->patient->address()->associate($address);
+                }
+
+                if (!$address) {
+                    throw new \Exception("Não foi possível adicionar o endereço do assistido {$this->patient->name}.");
                 }
             }
 
-            $patient->update($patientData);
+            $this->patient->update($patientData);
 
             DB::commit();
 
-            $this->success('Assistido atualizado.', description: "O assistido {$patient->name} foi atualizado.", redirectTo: route('patients.index'));
+            $this->success('Assistido atualizado.', description: "O assistido {$this->patient->name} foi atualizado.", redirectTo: route('patients.index'));
+
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -81,7 +90,7 @@ class Edit extends Component
             'patientState.email' => ['nullable', 'email', Rule::unique('patients', 'email')->ignore($this->patient->id)],
             'patientState.birth' => 'required|date|before:today|after:1900-01-01',
             'patientState.phone' => 'required|string|min:10|max:20',
-            'addressState.address' => 'nullable|string|min:3|max:255',
+            'addressState.address' => ['nullable', 'string', 'min:3', 'max:255', Rule::requiredIf(!empty($this->addressState['number']) || !empty($this->addressState['neighborhood']) || !empty($this->addressState['city']) || !empty($this->addressState['state']) || !empty($this->addressState['zip_code']))],
             'addressState.number' => 'nullable|string|min:1|max:255',
             'addressState.neighborhood' => 'nullable|string|min:2|max:255',
             'addressState.city' => 'nullable|string|min:3|max:255',
@@ -105,6 +114,7 @@ class Edit extends Component
             'patientState.phone.required' => 'Informe o telefone do assistido',
             'patientState.phone.min' => 'O telefone deve ter pelo menos 10 caracteres',
             'patientState.phone.max' => 'O telefone deve ter no maximo 20 caracteres',
+            'addressState.address.required' => 'Informe o endereço do assistido',
             'addressState.address.min' => 'O endereço deve ter pelo menos 3 caracteres',
             'addressState.address.max' => 'O endereço deve ter no maximo 255 caracteres',
             'addressState.number.min' => 'O numero deve ter pelo menos 1 caractere',

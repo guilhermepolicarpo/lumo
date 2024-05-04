@@ -57,7 +57,8 @@
                         <div class="col-span-2">
 
                             <x-input label="Endereço" wire:model="address.address" placeholder="Rua, Avenida" />
-
+                            <div class="mt-1 text-sm" wire:loading wire:target='getAddressByZipCode'>Carregando endereço...</div>
+                            
                         </div>
                     </div>
                     <div class="grid grid-cols-5 gap-5">

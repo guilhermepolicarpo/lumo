@@ -46,7 +46,14 @@ class Create extends Component
             DB::beginTransaction();
 
             $address = null;
-            if (!empty($addressData) && $addressData['zip_code'] !== '') {
+            if (
+                !empty($addressData['address']) ||
+                !empty($addressData['number']) ||
+                !empty($addressData['neighborhood']) ||
+                !empty($addressData['city']) ||
+                !empty($addressData['state']) ||
+                !empty($addressData['zip_code'])
+            ) {
                 $address = Address::create($addressData);
                 if (!$address) {
                     throw new \Exception("Não foi possível adicionar o endereço do assistido {$this->name}.");
@@ -54,6 +61,7 @@ class Create extends Component
             }
 
             $patient = $address ? $address->patient()->create($patientData) : Patient::create($patientData);
+
             if (!$patient) {
                 throw new \Exception("Não foi possível adicionar o assistido {$this->name}.");
             }
@@ -61,7 +69,7 @@ class Create extends Component
             DB::commit();
 
             $this->success('Assistido adicionado.', description: "O assistido {$patient->name} foi adicionado.", redirectTo: route('patients.index'));
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -78,7 +86,7 @@ class Create extends Component
             'patient.email' => ['nullable', 'email', Rule::unique('patients', 'email')],
             'patient.birth' => 'required|date|before:today|after:1900-01-01',
             'patient.phone' => 'required|string|min:10|max:20',
-            'address.address' => 'nullable|string|min:3|max:255',
+            'address.address' => ['nullable', 'string', 'min:3', 'max:255', Rule::requiredIf(!empty($this->address['number']) || !empty($this->address['neighborhood']) || !empty($this->address['city']) || !empty($this->address['state']) || !empty($this->address['zip_code']))],
             'address.number' => 'nullable|string|min:1|max:255',
             'address.neighborhood' => 'nullable|string|min:2|max:255',
             'address.city' => 'nullable|string|min:3|max:255',
@@ -102,6 +110,7 @@ class Create extends Component
             'patient.phone.required' => 'Informe o telefone do assistido',
             'patient.phone.min' => 'O telefone deve ter pelo menos 10 caracteres',
             'patient.phone.max' => 'O telefone deve ter no maximo 20 caracteres',
+            'address.address.required' => 'Informe o endereço do assistido',
             'address.address.min' => 'O endereço deve ter pelo menos 3 caracteres',
             'address.address.max' => 'O endereço deve ter no maximo 255 caracteres',
             'address.number.min' => 'O numero deve ter pelo menos 1 caractere',
