@@ -1,7 +1,7 @@
 <div>
 
     {{-- HEADER --}}
-    <x-header title="Assistidos" size="text-3xl" progress-indicator>
+    <x-header title="Assistidos" size="text-xl" progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input
                 placeholder="Pesquisar..."

@@ -1,6 +1,6 @@
 <div>
     <!-- HEADER -->
-    <x-header title="Adicionar assistido" progress-indicator />
+    <x-header title="Adicionar assistido" size="text-xl" progress-indicator />
 
     <x-card>
         <x-form wire:submit="save">

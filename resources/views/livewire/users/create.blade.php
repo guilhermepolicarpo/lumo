@@ -1,6 +1,6 @@
 <div>
     <!-- HEADER -->
-    <x-header title="Adicionar usuário" progress-indicator />
+    <x-header title="Adicionar usuário" size="text-xl" progress-indicator />
 
     <x-card class="max-w-4xl">
         <x-form wire:submit="save">
