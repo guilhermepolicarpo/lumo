@@ -15,7 +15,7 @@ class Index extends Component
     use Toast, WithPagination;
 
     public string $search = '';
-    public ?int $orientationIdToDelete = null;
+    public ?int $idToDelete = null;
     public bool $deleteModalConfirmation = false;
     public array $sortBy = ['column' => 'id', 'direction' => 'desc'];
 
@@ -65,9 +65,9 @@ class Index extends Component
     }
 
 
-    public function setOrientationIdToDelete(int $id): void
+    public function setIdToDelete(int $id): void
     {
-        $this->orientationIdToDelete = $id;
+        $this->idToDelete = $id;
     }
 
 

@@ -19,13 +19,16 @@
             <p>Nenhuma orientação encontrada.</p>
         @else
         <x-table :headers="$headers" :rows="$orientations" :sort-by="$sortBy" link="orientations/{id}/edit" with-pagination>
+            @scope('cell_description', $orientation)
+                {{ Str::limit($orientation['description'], 230) }}
+            @endscope
             @scope('actions', $orientation)
                 <div class="flex">
                     <x-button icon="o-pencil-square" link="{{ route('orientations.edit', $orientation) }}" spinner
                         tooltip-left="Editar" class="px-2 text-indigo-500 btn-ghost btn-sm" />
 
                     <x-button icon="o-trash" @click="$wire.deleteModalConfirmation = true"
-                        wire:click="setOrientationIdToDelete({{ $orientation['id'] }})" spinner tooltip-left="Excluir"
+                        wire:click="setIdToDelete({{ $orientation['id'] }})" spinner tooltip-left="Excluir"
                         class="px-2 text-red-500 btn-ghost btn-sm" />
                 </div>
             @endscope
@@ -41,7 +44,7 @@
         <x-slot:actions>
             <x-button label="Cancelar" @click="$wire.deleteModalConfirmation = false" />
 
-            <x-button label="Excluir" wire:click="delete({{ $orientationIdToDelete }})"
+            <x-button label="Excluir" wire:click="delete({{ $idToDelete }})"
                 class="bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 btn-primary" />
         </x-slot:actions>
     </x-modal>
