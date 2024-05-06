@@ -42,7 +42,7 @@ class Edit extends Component
     public function rules(): array
     {
         return [
-            'name' => 'required|min:3|max:255|unique:orientations,name,' . $this->orientation->id,
+            'name' => 'required|string|min:3|max:255|unique:orientations,name,' . $this->orientation->id,
             'description' => 'nullable|string|min:2',
         ];
     }

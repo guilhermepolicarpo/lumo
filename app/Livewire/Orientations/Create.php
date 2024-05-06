@@ -35,7 +35,7 @@ class Create extends Component
     public function rules(): array
     {
         return [
-            'name' => 'required|min:3|max:255|unique:orientations,name',
+            'name' => 'required|string|min:3|max:255|unique:orientations,name',
             'description' => 'nullable|string|min:2',
         ];
     }
