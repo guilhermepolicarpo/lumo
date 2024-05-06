@@ -100,7 +100,7 @@
             </div>
 
             <x-slot:actions>
-                <x-button label="Salvar" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                <x-button label="Salvar" icon="o-paper-airplane" spinner="save" type="submit" class="text-base btn-primary" />
             </x-slot:actions>
         </x-form>
     </x-card>

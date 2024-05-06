@@ -5,7 +5,7 @@
             <x-input placeholder="Pesquisar..." wire:model.live.debounce.250ms="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
         <x-slot:actions>
-            <x-button label="Adicionar usuário" link="{{ route('users.create') }}" responsive icon="o-plus" class="btn-primary" />
+            <x-button label="Adicionar usuário" link="{{ route('users.create') }}" responsive icon="o-plus" class="text-base btn-primary" />
         </x-slot:actions>
     </x-header>
 
@@ -14,7 +14,7 @@
         @if ($users->count() == 0)
             <p>Nenhum usuário encontrado.</p>
         @else
-            <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" link="users/{id}/edit" with-pagination>
+            <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" link="users/{id}/edit" with-pagination class="text-base">
                 @scope('actions', $user)
                 <div class="flex">
                     <x-button icon="o-pencil-square" link="{{ route('users.edit', $user) }}" spinner tooltip-left="Editar" class="px-2 text-indigo-500 btn-ghost btn-sm" />

@@ -2,6 +2,7 @@
 
 use App\Livewire\Dashboard;
 use App\Livewire\Auth\Login;
+use Illuminate\Support\Facades\Route;
 use App\Livewire\Patients\Index as PatientsIndex;
 use App\Livewire\Patients\Create as PatientCreate;
 use App\Livewire\Patients\Edit as PatientEdit;
@@ -12,10 +13,13 @@ use App\Livewire\Orientations\Index as OrientationsIndex;
 use App\Livewire\Orientations\Create as OrientationCreate;
 use App\Livewire\Orientations\Edit as OrientationEdit;
 use App\Livewire\SpiritistCenter\Edit as SpiritistCenterEdit;
-use Illuminate\Support\Facades\Route;
 use App\Livewire\Users\Edit as UserEdit;
 use App\Livewire\Users\Index as UsersIndex;
 use App\Livewire\Users\Create as UserCreate;
+use App\Livewire\Medicines\Index as MedicinesIndex;
+use App\Livewire\Medicines\Create as MedicineCreate;
+use App\Livewire\Medicines\Edit as MedicineEdit;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -69,5 +73,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/orientations', OrientationsIndex::class)->name('orientations.index');
         Route::get('/orientations/create', OrientationCreate::class)->name('orientations.create');
         Route::get('/orientations/{orientation}/edit', OrientationEdit::class)->name('orientations.edit');
+
+        // Medicines
+        Route::get('/medicines', MedicinesIndex::class)->name('medicines.index');
+        Route::get('/medicines/create', MedicineCreate::class)->name('medicines.create');
+        Route::get('/medicines/{medicine}/edit', MedicineEdit::class)->name('medicines.edit');
     });
 });

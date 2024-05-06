@@ -88,8 +88,8 @@
             </div>
 
             <x-slot:actions>
-                <x-button label="Cancelar" link="{{ route('patients.index') }}" />
-                <x-button label="Adicionar" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                <x-button label="Cancelar" link="{{ route('patients.index') }}" class="text-base" />
+                <x-button label="Adicionar" icon="o-paper-airplane" spinner="save" type="submit" class="text-base btn-primary" />
             </x-slot:actions>
         </x-form>
     </x-card>

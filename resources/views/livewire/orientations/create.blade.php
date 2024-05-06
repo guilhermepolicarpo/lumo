@@ -10,8 +10,8 @@
             <x-textarea label="Descrição" wire:model="description" placeholder="Digite uma descrição..." rows="5" />
 
             <x-slot:actions>
-                <x-button label="Cancelar" link="{{ route('orientations.index') }}" />
-                <x-button label="Adicionar" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                <x-button label="Cancelar" link="{{ route('orientations.index') }}" class="text-base" />
+                <x-button label="Adicionar" icon="o-paper-airplane" spinner="save" type="submit" class="text-base btn-primary" />
             </x-slot:actions>
 
         </x-form>

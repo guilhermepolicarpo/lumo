@@ -1,8 +1,8 @@
 <div>
     {{-- HEADER --}}
-    <x-header title="Centro Espírita" size="text-2xl" progress-indicator>
+    <x-header title="Editar assistido" size="text-2xl" progress-indicator>
         <x-slot:actions>
-            <x-button label="Ver atendimentos" link="#" responsive icon="o-document-text" class="btn-primary" />
+            <x-button label="Ver atendimentos" link="#" responsive icon="o-document-text" class="text-base btn-primary" />
         </x-slot:actions>
     </x-header>
 
@@ -92,8 +92,8 @@
             </div>
 
             <x-slot:actions>
-                <x-button label="Cancelar" link="{{ route('patients.index') }}" />
-                <x-button label="Atualizar" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                <x-button label="Cancelar" link="{{ route('patients.index') }}" class="text-base" />
+                <x-button label="Atualizar" icon="o-paper-airplane" spinner="save" type="submit" class="text-base btn-primary" />
             </x-slot:actions>
 
         </x-form>

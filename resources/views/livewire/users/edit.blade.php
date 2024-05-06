@@ -15,8 +15,8 @@
             </div>
 
             <x-slot:actions>
-                <x-button label="Cancelar" link="{{ route('users.index') }}" />
-                <x-button label="Editar" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                <x-button label="Cancelar" link="{{ route('users.index') }}" class="text-base" />
+                <x-button label="Editar" icon="o-paper-airplane" spinner="save" type="submit" class="text-base btn-primary" />
             </x-slot:actions>
 
         </x-form>

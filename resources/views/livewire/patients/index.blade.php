@@ -15,7 +15,7 @@
                 link="{{ route('patients.create') }}"
                 responsive
                 icon="o-plus"
-                class="btn-primary" />
+                class="text-base btn-primary" />
         </x-slot:actions>
     </x-header>
 
@@ -25,7 +25,7 @@
         @if ($patients->count() == 0)
             <p>Nenhum assistido encontrado.</p>
         @else
-        <x-table :headers="$headers" :rows="$patients" :sort-by="$sortBy" link="patients/{id}/edit" with-pagination>
+        <x-table :headers="$headers" :rows="$patients" :sort-by="$sortBy" link="patients/{id}/edit" with-pagination class="text-base">
             @scope('cell_address', $patient)
                 <div>
                     @if(isset($patient->address->address))

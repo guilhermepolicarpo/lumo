@@ -8,7 +8,7 @@
         </x-slot:middle>
         <x-slot:actions>
             <x-button label="Adicionar orientação" link="{{ route('orientations.create') }}" responsive icon="o-plus"
-                class="btn-primary" />
+                class="text-base btn-primary" />
         </x-slot:actions>
     </x-header>
 
@@ -18,7 +18,7 @@
         @if ($orientations->count() == 0)
             <p>Nenhuma orientação encontrada.</p>
         @else
-        <x-table :headers="$headers" :rows="$orientations" :sort-by="$sortBy" link="orientations/{id}/edit" with-pagination>
+        <x-table :headers="$headers" :rows="$orientations" :sort-by="$sortBy" link="orientations/{id}/edit" with-pagination class="text-base">
             @scope('cell_description', $orientation)
                 {{ Str::limit($orientation['description'], 230) }}
             @endscope

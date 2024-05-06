@@ -40,7 +40,7 @@
             <x-app-brand class="p-5 pt-3" />
 
             {{-- MENU --}}
-            <x-menu activate-by-route>
+            <x-menu activate-by-route class="text-base">
 
                 {{-- User --}}
                 @if($user = auth()->user())
@@ -70,7 +70,7 @@
                     <x-menu-item title="Usuários" icon="o-user" link="{{ route('users.index') }}" />
                     <x-menu-item title="Mentores" icon="o-user-group" link="{{ route('mentors.index') }}" />
                     <x-menu-item title="Orientações" icon="o-chat-bubble-left" link="{{ route('orientations.index') }}" />
-                    <x-menu-item title="Fluídicos" icon="o-circle-stack" link="" />
+                    <x-menu-item title="Fluídicos" icon="o-circle-stack" link="{{ route('medicines.index') }}" />
                     <x-menu-item title="Tipos de Atendimento" icon="o-queue-list" link="" />
                 </x-menu-sub>
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Medicine;
 use App\Models\User;
 use App\Models\Mentor;
 use App\Models\Orientation;
@@ -28,5 +29,6 @@ class DatabaseSeeder extends Seeder
         Patient::factory(439)->create();
         Mentor::factory(20)->create();
         Orientation::factory(20)->create();
+        Medicine::factory(439)->create();
     }
 }

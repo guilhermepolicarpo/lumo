@@ -15,7 +15,7 @@
             <x-input label="Password" wire:model="password" type="password" icon="o-key" inline />
 
             <x-slot:actions>
-                <x-button label="Login" type="submit" icon="o-paper-airplane" class="btn-primary" spinner="login" />
+                <x-button label="Login" type="submit" icon="o-paper-airplane" class="text-base btn-primary" spinner="login" />
             </x-slot:actions>
         </x-form>
     </x-card>
