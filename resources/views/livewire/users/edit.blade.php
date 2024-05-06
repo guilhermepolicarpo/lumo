@@ -1,6 +1,6 @@
 <div>
     {{-- HEADER --}}
-    <x-header title="Editar usuário" size="text-xl" progress-indicator />
+    <x-header title="Editar usuário" size="text-2xl" progress-indicator />
 
     <x-card class="max-w-4xl">
         <x-form wire:submit="save">

@@ -1,6 +1,6 @@
 <div>
     <!-- HEADER -->
-    <x-header title="Usuários" size="text-xl" progress-indicator>
+    <x-header title="Usuários" size="text-2xl" progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input placeholder="Pesquisar..." wire:model.live.debounce.250ms="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>

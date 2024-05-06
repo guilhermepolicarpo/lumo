@@ -1,6 +1,6 @@
 <div>
     <!-- HEADER -->
-    <x-header title="Adicionar assistido" size="text-xl" progress-indicator />
+    <x-header title="Adicionar assistido" size="text-2xl" progress-indicator />
 
     <x-card>
         <x-form wire:submit="save">
@@ -58,7 +58,7 @@
 
                             <x-input label="Endereço" wire:model="address.address" placeholder="Rua, Avenida" />
                             <div class="mt-1 text-sm" wire:loading wire:target='getAddressByZipCode'>Carregando endereço...</div>
-                            
+
                         </div>
                     </div>
                     <div class="grid grid-cols-5 gap-5">

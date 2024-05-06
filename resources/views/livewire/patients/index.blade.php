@@ -1,7 +1,7 @@
 <div>
 
     {{-- HEADER --}}
-    <x-header title="Assistidos" size="text-xl" progress-indicator>
+    <x-header title="Assistidos" size="text-2xl" progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input
                 placeholder="Pesquisar..."
@@ -65,6 +65,13 @@
             @endscope
             @scope('actions', $patient)
                 <div class="flex">
+                    <x-button
+                        icon="o-document-text"
+                        link="#"
+                        spinner
+                        tooltip-left="Ver atendimentos"
+                        class="px-2 text-indigo-500 btn-ghost btn-sm" />
+
                     <x-button
                         icon="o-pencil-square"
                         link="{{ route('patients.edit', $patient) }}"

@@ -1,6 +1,10 @@
 <div>
     {{-- HEADER --}}
-    <x-header title="Editar assistido" size="text-xl" progress-indicator />
+    <x-header title="Centro Espírita" size="text-2xl" progress-indicator>
+        <x-slot:actions>
+            <x-button label="Ver atendimentos" link="#" responsive icon="o-document-text" class="btn-primary" />
+        </x-slot:actions>
+    </x-header>
 
     <x-card>
         <x-form wire:submit="save">

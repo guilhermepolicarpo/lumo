@@ -50,7 +50,7 @@ class Index extends Component
     public function headers(): array
     {
         return [
-            ['key' => 'name', 'label' => 'Nome', 'class' => 'w-64 whitespace-nowrap'],
+            ['key' => 'name', 'label' => 'Nome', 'class' => 'w-64 whitespace-nowrap h-16'],
             ['key' => 'email', 'label' => 'E-mail'],
         ];
     }

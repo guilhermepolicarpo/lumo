@@ -9,6 +9,11 @@
 
     <title>{{ isset($title) ? $title.' | '.config('app.name') : config('app.name') }}</title>
 
+
+    {{-- Cropper.js --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -61,9 +66,9 @@
                 <x-menu-item title="Assistidos" icon="o-users" link="{{ route('patients.index') }}" />
 
                 <x-menu-sub title="Gestão" icon="o-cog-6-tooth">
-                    <x-menu-item title="Centro Espírita" icon="o-home" />
+                    <x-menu-item title="Centro Espírita" icon="o-home" link="{{ route('spiritist-center.edit') }}" />
                     <x-menu-item title="Usuários" icon="o-user" link="{{ route('users.index') }}" />
-                    <x-menu-item title="Mentores" icon="o-user-group" />
+                    <x-menu-item title="Mentores" icon="o-user-group" link="{{ route('mentors.index') }}" />
                     <x-menu-item title="Orientações" icon="o-chat-bubble-left" />
                     <x-menu-item title="Fluídicos" icon="o-circle-stack" />
                     <x-menu-item title="Tipos de Atendimento" icon="o-queue-list" />

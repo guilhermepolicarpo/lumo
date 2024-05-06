@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Address;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Patients>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SpiritistCenter>
  */
-class PatientFactory extends Factory
+class SpiritistCenterFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,8 +21,8 @@ class PatientFactory extends Factory
             'address_id' => Address::factory(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'birth' => fake()->date(),
             'phone' => fake()->phoneNumber(),
+            'logo_url' => 'https://picsum.photos/300/300',
         ];
     }
 }

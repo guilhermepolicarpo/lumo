@@ -1,6 +1,6 @@
 <div>
     <!-- HEADER -->
-    <x-header title="Painel" size="text-xl" progress-indicator />
+    <x-header title="Painel" size="text-2xl" progress-indicator />
 
     <!-- TABLE  -->
     <x-card>
