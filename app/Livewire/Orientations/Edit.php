@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Orientatios;
+namespace App\Livewire\Orientations;
 
 use Livewire\Component;
 
@@ -8,6 +8,6 @@ class Edit extends Component
 {
     public function render()
     {
-        return view('livewire.orientatios.edit');
+        return view('livewire.orientations.edit');
     }
 }

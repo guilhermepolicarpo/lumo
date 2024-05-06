@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Orientatios;
+namespace App\Livewire\Orientations;
 
 use Livewire\Component;
 
@@ -8,6 +8,6 @@ class Create extends Component
 {
     public function render()
     {
-        return view('livewire.orientatios.create');
+        return view('livewire.orientations.create');
     }
 }

@@ -69,9 +69,9 @@
                     <x-menu-item title="Centro Espírita" icon="o-home" link="{{ route('spiritist-center.edit') }}" />
                     <x-menu-item title="Usuários" icon="o-user" link="{{ route('users.index') }}" />
                     <x-menu-item title="Mentores" icon="o-user-group" link="{{ route('mentors.index') }}" />
-                    <x-menu-item title="Orientações" icon="o-chat-bubble-left" />
-                    <x-menu-item title="Fluídicos" icon="o-circle-stack" />
-                    <x-menu-item title="Tipos de Atendimento" icon="o-queue-list" />
+                    <x-menu-item title="Orientações" icon="o-chat-bubble-left" link="{{ route('orientations.index') }}" />
+                    <x-menu-item title="Fluídicos" icon="o-circle-stack" link="" />
+                    <x-menu-item title="Tipos de Atendimento" icon="o-queue-list" link="" />
                 </x-menu-sub>
 
                 <x-menu-sub title="Biblioteca" icon="o-building-library">

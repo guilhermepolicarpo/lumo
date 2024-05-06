@@ -8,6 +8,9 @@ use App\Livewire\Patients\Edit as PatientEdit;
 use App\Livewire\Mentors\Index as MentorsIndex;
 use App\Livewire\Mentors\Create as MentorCreate;
 use App\Livewire\Mentors\Edit as MentorEdit;
+use App\Livewire\Orientations\Index as OrientationsIndex;
+use App\Livewire\Orientations\Create as OrientationCreate;
+use App\Livewire\Orientations\Edit as OrientationEdit;
 use App\Livewire\SpiritistCenter\Edit as SpiritistCenterEdit;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Users\Edit as UserEdit;
@@ -61,5 +64,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/mentors', MentorsIndex::class)->name('mentors.index');
         Route::get('/mentors/create', MentorCreate::class)->name('mentors.create');
         Route::get('/mentors/{mentor}/edit', MentorEdit::class)->name('mentors.edit');
+
+        // Orientations
+        Route::get('/orientations', OrientationsIndex::class)->name('orientations.index');
+        Route::get('/orientations/create', OrientationCreate::class)->name('orientations.create');
+        Route::get('/orientations/{orientation}/edit', OrientationEdit::class)->name('orientations.edit');
     });
 });
