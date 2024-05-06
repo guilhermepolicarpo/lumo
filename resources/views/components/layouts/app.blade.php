@@ -71,7 +71,7 @@
                     <x-menu-item title="Mentores" icon="o-user-group" link="{{ route('mentors.index') }}" />
                     <x-menu-item title="Orientações" icon="o-chat-bubble-left" link="{{ route('orientations.index') }}" />
                     <x-menu-item title="Fluídicos" icon="o-circle-stack" link="{{ route('medicines.index') }}" />
-                    <x-menu-item title="Tipos de Atendimento" icon="o-queue-list" link="" />
+                    <x-menu-item title="Tipos de Atendimento" icon="o-queue-list" link="{{ route('types-of-treatments.index') }}" />
                 </x-menu-sub>
 
                 <x-menu-sub title="Biblioteca" icon="o-building-library">
