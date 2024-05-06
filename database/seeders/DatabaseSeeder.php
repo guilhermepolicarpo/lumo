@@ -9,6 +9,7 @@ use App\Models\Orientation;
 use App\Models\Patient;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\SpiritistCenter;
+use App\Models\TypeOfTreatment;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -30,5 +31,6 @@ class DatabaseSeeder extends Seeder
         Mentor::factory(20)->create();
         Orientation::factory(20)->create();
         Medicine::factory(439)->create();
+        TypeOfTreatment::factory(20)->create();
     }
 }
