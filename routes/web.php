@@ -86,6 +86,6 @@ Route::middleware('auth')->group(function () {
         // Types of Treatments
         Route::get('/types-of-treatments', TypesOfTreatmentsIndex::class)->name('types-of-treatments.index');
         Route::get('/types-of-treatments/create', TypesOfTreatmentsCreate::class)->name('types-of-treatments.create');
-        Route::get('/types-of-treatments/{typesOfTreatments}/edit', TypesOfTreatmentsEdit::class)->name('types-of-treatments.edit');
+        Route::get('/types-of-treatments/{typeOfTreatment}/edit', TypesOfTreatmentsEdit::class)->name('types-of-treatments.edit');
     });
 });
