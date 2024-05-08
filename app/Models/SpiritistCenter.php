@@ -15,7 +15,7 @@ class SpiritistCenter extends Model
         'address_id',
         'email',
         'phone',
-        'logo_url',
+        'logo_image_path',
     ];
 
 

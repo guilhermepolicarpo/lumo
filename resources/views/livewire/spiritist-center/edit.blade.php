@@ -24,7 +24,7 @@
                         crop-cancel-text="Manter original"
                         crop-save-text="Cortar" >
 
-                        <img src="{{ $spiritistCenter->logo_url ?? '/empty-logo-image.png' }}" class="h-40 rounded-lg" />
+                        <img src="{{ $spiritistCenter->logo_image_path ?? '/empty-logo-image.png' }}" class="h-40 rounded-lg" />
                     </x-file>
                 </div>
             </div>

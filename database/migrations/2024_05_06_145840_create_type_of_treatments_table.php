@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('types_of_treatments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->longText('description')->nullable();
+            $table->text('description')->nullable();
             $table->boolean('is_the_healing_touch')->default(false);
             $table->boolean('has_form')->default(false);
             $table->timestamps();

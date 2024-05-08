@@ -22,6 +22,7 @@ return new class extends Migration
 
             // Indexes
             $table->index('address_id');
+            $table->index('email');
         });
     }
 

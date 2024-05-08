@@ -51,7 +51,7 @@ class Edit extends Component
 
         if ($this->logo) {
             $url = $this->logo->store('spiritist-center', 'public');
-            $validatedData['centerState']['logo_url'] = "/storage/$url";
+            $validatedData['centerState']['logo_image_path'] = "/storage/$url";
         }
 
         $this->spiritistCenter = SpiritistCenter::updateOrCreate(['id' => $this->spiritistCenter->id ?? null], $validatedData['centerState']);

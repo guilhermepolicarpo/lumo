@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone', 20)->nullable();
-            $table->string('logo_url')->nullable();
+            $table->string('logo_image_path')->nullable();
             $table->timestamps();
 
             // Indexes
