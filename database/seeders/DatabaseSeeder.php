@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Appointment;
 use App\Models\Medicine;
 use App\Models\User;
 use App\Models\Mentor;
@@ -27,10 +28,11 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
         User::factory(20)->create();
-        Patient::factory(439)->create();
+        Patient::factory(239)->create();
         Mentor::factory(20)->create();
         Orientation::factory(20)->create();
         Medicine::factory(439)->create();
         TypeOfTreatment::factory(20)->create();
+        Appointment::factory(50)->create();
     }
 }

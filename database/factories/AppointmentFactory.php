@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Patient;
+use App\Models\TypeOfTreatment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,15 @@ class AppointmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'patient_id' => Patient::factory(),
+            'treatment_type_id' => TypeOfTreatment::factory(),
+            'treatment_id' => null,
+            'date' => fake()->date(),
+            'treatment_mode' => fake()->randomElement(['Presencial', 'A distância']),
+            'status' => fake()->randomElement(['Confirmado', 'Em espera', 'Atendido', 'Faltou']),
+            'notes' => fake()->sentence(),
+            'who_requested_it' => null,
+            'who_requested_it_phone' => null,
         ];
     }
 }
