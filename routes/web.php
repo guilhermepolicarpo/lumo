@@ -22,6 +22,7 @@ use App\Livewire\Medicines\Edit as MedicineEdit;
 use App\Livewire\TypesOfTreatments\Index as TypesOfTreatmentsIndex;
 use App\Livewire\TypesOfTreatments\Create as TypesOfTreatmentsCreate;
 use App\Livewire\TypesOfTreatments\Edit as TypesOfTreatmentsEdit;
+use App\Livewire\Appointments\Index as AppointmentsIndex;
 
 
 
@@ -87,5 +88,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/types-of-treatments', TypesOfTreatmentsIndex::class)->name('types-of-treatments.index');
         Route::get('/types-of-treatments/create', TypesOfTreatmentsCreate::class)->name('types-of-treatments.create');
         Route::get('/types-of-treatments/{typeOfTreatment}/edit', TypesOfTreatmentsEdit::class)->name('types-of-treatments.edit');
+
+        // Appointments
+        Route::get('/appointments', AppointmentsIndex::class)->name('appointments.index');
     });
 });

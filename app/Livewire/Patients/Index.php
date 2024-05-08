@@ -13,8 +13,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class Index extends Component
 {
 
-    use Toast;
-    use WithPagination;
+    use Toast,WithPagination;
 
     public string $search = '';
 
@@ -50,7 +49,7 @@ class Index extends Component
     public function headers(): array
     {
         return [
-            ['key' => 'name', 'label' => 'Nome', 'class' => 'w-64 whitespace-nowrap'],
+            ['key' => 'name', 'label' => 'Nome', 'class' => 'w-64 h-16 whitespace-nowrap'],
             ['key' => 'address', 'label' => 'Endereço', 'sortBy' => 'address_address', 'class' => 'whitespace-nowrap'],
             ['key' => 'birth', 'label' => 'Idade', 'class' => 'whitespace-nowrap'],
             ['key' => 'phone', 'label' => 'Telefone', 'class' => 'whitespace-nowrap'],

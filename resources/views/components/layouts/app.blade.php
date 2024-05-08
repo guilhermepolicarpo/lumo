@@ -14,6 +14,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
 
+    {{-- Flatpickr --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+    <script>
+        flatpickr.localize(flatpickr.l10ns.pt);
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -61,7 +69,7 @@
 
                 <x-menu-item title="Painel" icon="o-sparkles" link="{{ route('dashboard') }}" />
 
-                <x-menu-item title="Agendamento" icon="o-calendar" link="#" />
+                <x-menu-item title="Agendamentos" icon="o-calendar" link="{{ route('appointments.index') }}" />
 
                 <x-menu-item title="Assistidos" icon="o-users" link="{{ route('patients.index') }}" />
 

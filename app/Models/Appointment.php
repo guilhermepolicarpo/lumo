@@ -20,4 +20,19 @@ class Appointment extends Model
         'who_requested_it',
         'who_requested_it_phone',
     ];
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function treatmentType()
+    {
+        return $this->belongsTo(TypeOfTreatment::class);
+    }
+
+    public function treatment()
+    {
+        return $this->belongsTo(Treatment::class);
+    }
 }

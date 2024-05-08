@@ -22,7 +22,7 @@ class AppointmentFactory extends Factory
             'patient_id' => Patient::factory(),
             'treatment_type_id' => TypeOfTreatment::factory(),
             'treatment_id' => null,
-            'date' => fake()->date(),
+            'date' => now()->format('Y-m-d'),
             'treatment_mode' => fake()->randomElement(['Presencial', 'A distância']),
             'status' => fake()->randomElement(['Confirmado', 'Em espera', 'Atendido', 'Faltou']),
             'notes' => fake()->sentence(),
