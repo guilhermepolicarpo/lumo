@@ -35,7 +35,7 @@
                         {{ $patient->address->number }} -
                     @endif
                     @if(isset($patient->address->neighborhood))
-                        {{ $patient->address->neighborhood }}
+                        {{ Str::limit($patient->address->neighborhood, 15) }}
                     @endif
                 </div>
                 <div class="text-gray-500">

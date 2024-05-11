@@ -5,6 +5,7 @@ namespace App\Livewire\Patients;
 use Mary\Traits\Toast;
 use App\Models\Patient;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,7 @@ class Edit extends Component
     }
 
 
+    #[Title('Editar Assistido')]
     public function render()
     {
         return view('livewire.patients.edit');

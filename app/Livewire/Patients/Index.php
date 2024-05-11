@@ -37,7 +37,8 @@ class Index extends Component
 
     public function patients(): LengthAwarePaginator
     {
-        return Patient::with('address')
+        return Patient::select('id', 'name', 'birth', 'address_id')
+            ->with('address')
             ->withAggregate('address', 'address')
             ->when($this->search, fn (Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->orderBy(...array_values($this->sortBy))
@@ -49,10 +50,9 @@ class Index extends Component
     public function headers(): array
     {
         return [
-            ['key' => 'name', 'label' => 'Nome', 'class' => 'w-64 h-16 whitespace-nowrap'],
+            ['key' => 'name', 'label' => 'Nome', 'class' => 'w-80 h-16 '],
             ['key' => 'address', 'label' => 'Endereço', 'sortBy' => 'address_address', 'class' => 'whitespace-nowrap'],
             ['key' => 'birth', 'label' => 'Idade', 'class' => 'whitespace-nowrap'],
-            ['key' => 'phone', 'label' => 'Telefone', 'class' => 'whitespace-nowrap'],
         ];
     }
 

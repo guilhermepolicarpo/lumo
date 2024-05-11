@@ -2,7 +2,7 @@
     <x-card class="p-10">
         <div class="mb-10">
             <div class="flex items-center justify-center gap-2">
-                <x-icon name="o-square-3-stack-3d" class="w-6 -mb-1 text-purple-500" />
+                <x-icon name="o-sun" class="-mb-1 text-purple-500 w-7" />
                 <span class="mr-3 text-3xl font-bold text-transparent bg-gradient-to-r from-purple-500 to-pink-300 bg-clip-text ">
                     Lumo
                 </span>
