@@ -54,6 +54,9 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
+    // Appointments
+    Route::get('/appointments', AppointmentsIndex::class)->name('appointments.index');
+
     // Patients
     Route::get('/patients', PatientsIndex::class)->name('patients.index');
     Route::get('/patients/create', PatientCreate::class)->name('patients.create');
@@ -88,8 +91,5 @@ Route::middleware('auth')->group(function () {
         Route::get('/types-of-treatments', TypesOfTreatmentsIndex::class)->name('types-of-treatments.index');
         Route::get('/types-of-treatments/create', TypesOfTreatmentsCreate::class)->name('types-of-treatments.create');
         Route::get('/types-of-treatments/{typeOfTreatment}/edit', TypesOfTreatmentsEdit::class)->name('types-of-treatments.edit');
-
-        // Appointments
-        Route::get('/appointments', AppointmentsIndex::class)->name('appointments.index');
     });
 });

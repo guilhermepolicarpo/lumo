@@ -38,7 +38,7 @@
                         {{ $patient->address->neighborhood }}
                     @endif
                 </div>
-                <div>
+                <div class="text-gray-500">
                     @if (isset($patient->address->city))
                         {{ $patient->address->city }} -
                     @endif
@@ -59,7 +59,7 @@
                         {{ $ageDifference->y }} {{ $ageDifference->y == 1 ? 'ano' : 'anos' }}
                     @endif
                 </div>
-                <div>
+                <div class="text-gray-500">
                     {{ now()->parse($patient->birth)->format('d/m/Y') }}
                 </div>
             @endscope

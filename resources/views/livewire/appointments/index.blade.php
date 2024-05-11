@@ -7,36 +7,76 @@
                 icon="o-magnifying-glass" />
         </x-slot:middle>
         <x-slot:actions>
-            <x-button label="Filtros" icon="o-funnel" responsive @click="$wire.drawer = true" class="text-base btn-outline" />
-            <x-button label="Adicionar novo" link="#" responsive icon="o-plus"
-                class="text-base btn-primary" />
+            <x-button label="Filtros" icon="o-funnel" responsive @click="$wire.drawer = true" class="text-base btn-outline" >
+                <x-badge value="7" class="badge-secondary indicator-item" />
+            </x-button>
+
+            <x-button label="Adicionar novo" link="#" responsive icon="o-plus" class="text-base btn-primary" />
         </x-slot:actions>
     </x-header>
 
 
-    {{-- TABLE --}}
-    <x-card>
-        @if ($appointments->count() == 0)
-            <p>Nenhum agendamento encontrado.</p>
-        @else
-        <x-table :headers="$headers" :rows="$appointments" :sort-by="$sortBy" link="#" with-pagination class="text-base">
-            @scope('cell_patient_name', $appointment)
-                {{ Str::words($appointment->patient->name, 4, '...') }}
-            @endscope
-            @scope('cell_date', $appointment)
-                {{ now()->parse($appointment->date)->format('d/m/Y') }}
-            @endscope
-            @scope('actions', $appointment)
-            <div class="flex">
-                <x-button icon="o-pencil-square" link="#" spinner
-                    tooltip-left="Editar" class="px-2 text-indigo-500 btn-ghost btn-sm" />
 
-                <x-button icon="o-trash" @click="$wire.deleteModalConfirmation = true"
-                    wire:click="setIdToDelete({{ $appointment['id'] }})" spinner tooltip-left="Excluir"
-                    class="px-2 text-red-500 btn-ghost btn-sm" />
+    <x-card>
+        {{-- APPLIED FILTERS --}}
+        @if ($date || $search || $selectedMode || $selectedType || $selectedStatus)
+            <div class="flex items-center gap-2 mb-3">
+                <p class="text-sm font-medium">Filtros aplicados:</p>
+                @if ($date)
+                    <x-badge value="Data: {{ now()->parse($date)->format('d/m/Y') }}" class="font-medium badge-primary" />
+                @endif
+                @if ($search)
+                    <x-badge value="Nome: {{ $search }}" class="font-medium badge-primary" />
+                @endif
+                @if ($selectedStatus)
+                    <x-badge value="Status: {{ $selectedStatus }}" class="font-medium badge-primary" />
+                @endif
+                @if ($selectedType)
+                    <x-badge value="Tipo: {{ $types_of_treatment->get($selectedType)->name }}" class="font-medium badge-primary" />
+                @endif
+                @if ($selectedMode)
+                    <x-badge value="Modo: {{ $selectedMode }}" class="font-medium badge-primary" />
+                @endif
+                <button wire:click="clear" class="px-2 text-xs font-semibold rounded-full btn-ghost btn-sm">Limpar</button>
             </div>
-            @endscope
-        </x-table>
+        @endif
+
+        @if ($appointments->count() !== 0)
+            {{-- TABLE --}}
+            <x-table :headers="$headers" :rows="$appointments" :sort-by="$sortBy" link="#" with-pagination class="text-base">
+                @scope('cell_patient_name', $appointment)
+                    {{ Str::words($appointment->patient->name, 4, '...') }}
+                @endscope
+                @scope('cell_date', $appointment)
+                    {{ now()->parse($appointment->date)->format('d/m/Y') }}
+                @endscope
+                @scope('cell_status', $appointment)
+                    @if ($appointment->status === 'Confirmado')
+                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5" />
+                    @endif
+                    @if ($appointment->status === 'Em espera')
+                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-yellow-800 bg-yellow-100" />
+                    @endif
+                    @if ($appointment->status === 'Atendido')
+                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-green-800 bg-green-100" />
+                    @endif
+                    @if ($appointment->status === 'Faltou')
+                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-red-800 bg-red-100" />
+                    @endif
+                @endscope
+                @scope('actions', $appointment)
+                <div class="flex">
+                    <x-button icon="o-pencil-square" link="#" spinner
+                        tooltip-left="Editar" class="px-2 text-indigo-500 btn-ghost btn-sm" />
+
+                    <x-button icon="o-trash" @click="$wire.deleteModalConfirmation = true"
+                        wire:click="setIdToDelete({{ $appointment['id'] }})" spinner tooltip-left="Excluir"
+                        class="px-2 text-red-500 btn-ghost btn-sm" />
+                </div>
+                @endscope
+            </x-table>
+        @else
+            <p>Nenhum agendamento encontrado.</p>
         @endif
     </x-card>
 
@@ -46,14 +86,24 @@
         class="w-11/12 lg:w-1/3">
 
         @php
-            $configDate = ['altFormat' => 'd/m/Y'];
+            $configDate = ['altFormat' => 'd/m/Y', 'dateFormat' => 'Y-m-d'];
         @endphp
 
-        <x-datepicker label="Data" wire:model="date" icon="o-calendar" placehoulder="Selecione uma data" :config="$configDate" />
+        <div class="flex flex-col gap-3">
+            <x-datepicker label="Data" wire:model.lazy="date" icon="o-calendar" placehoulder="Selecione uma data" :config="$configDate" />
+
+            <x-select label="Status" wire:model.lazy="selectedStatus" :options="$status" placeholder="Todos" class="text-base" icon="o-check-circle" />
+
+            <x-select label="Tipo de Atendimento" wire:model.lazy="selectedType" :options="$types_of_treatment" placeholder="Todos"
+                class="text-base" icon="o-queue-list" />
+
+            <x-select label="Modo de Atendimento" wire:model.lazy="selectedMode" :options="$modes" placeholder="Todos" class="text-base" icon="o-map" />
+        </div>
+
 
         <x-slot:actions>
-            <x-button label="Limpar" icon="o-x-mark" wire:click="clear" spinner />
-            <x-button label="Filtrar" class="btn-primary" icon="o-check" @click="$wire.drawer = false" />
+            <x-button label="Limpar" icon="o-x-mark" wire:click="clear" spinner class="text-base" />
+            <x-button label="Filtrar" class="text-base btn-primary" icon="o-check" @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
 

@@ -69,7 +69,7 @@
 
                 <x-menu-item title="Painel" icon="o-sparkles" link="{{ route('dashboard') }}" />
 
-                <x-menu-item title="Agendamentos" icon="o-calendar" link="{{ route('appointments.index') }}" />
+                <x-menu-item title="Agendamentos" icon="o-calendar" link="{{ route('appointments.index') }}" tooltip-right="Agendamentos"/>
 
                 <x-menu-item title="Assistidos" icon="o-users" link="{{ route('patients.index') }}" />
 
