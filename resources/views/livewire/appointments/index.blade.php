@@ -11,7 +11,8 @@
                 <x-badge value="7" class="badge-secondary indicator-item" />
             </x-button>
 
-            <x-button label="Adicionar novo" link="#" responsive icon="o-plus" class="text-base btn-primary" />
+            {{-- Create Appointment --}}
+            <livewire:appointments.create :types_of_treatment="$types_of_treatment" :modes="$modes" :key="'create-appointment'" @saved="$refresh" />
         </x-slot:actions>
     </x-header>
 
@@ -23,25 +24,26 @@
             <div class="flex items-center gap-2 mb-3">
                 <p class="text-sm font-medium">Filtros aplicados:</p>
                 @if ($date)
-                    <x-badge value="Data: {{ now()->parse($date)->format('d/m/Y') }}" class="font-medium badge-primary" />
+                    <x-badge value="Data: {{ now()->parse($date)->format('d/m/Y') }}" class="text-xs font-medium badge-primary" />
                 @endif
                 @if ($search)
-                    <x-badge value="Nome: {{ $search }}" class="font-medium badge-primary" />
+                    <x-badge value="Nome: {{ $search }}" class="text-xs font-medium badge-primary" />
                 @endif
                 @if ($selectedStatus)
-                    <x-badge value="Status: {{ $selectedStatus }}" class="font-medium badge-primary" />
+                    <x-badge value="Status: {{ $selectedStatus }}" class="text-xs font-medium badge-primary" />
                 @endif
                 @if ($selectedType)
-                    <x-badge value="Tipo: {{ $types_of_treatment->get($selectedType)->name }}" class="font-medium badge-primary" />
+                    <x-badge value="Tipo: {{ $types_of_treatment->get($selectedType)->name }}" class="text-xs font-medium badge-primary" />
                 @endif
                 @if ($selectedMode)
-                    <x-badge value="Modo: {{ $selectedMode }}" class="font-medium badge-primary" />
+                    <x-badge value="Modo: {{ $selectedMode }}" class="text-xs font-medium badge-primary" />
                 @endif
-                <button wire:click="clear" class="px-2 text-xs font-semibold rounded-full btn-ghost btn-sm">Limpar</button>
+                <x-button label="Limpar" wire:click="clear" no-wire-navigate class="text-xs btn-ghost btn-sm" />
             </div>
         @endif
 
         @if ($appointments->count() !== 0)
+
             {{-- TABLE --}}
             <x-table :headers="$headers" :rows="$appointments" :sort-by="$sortBy" link="#" with-pagination class="text-base">
                 @scope('cell_patient_name', $appointment)
@@ -52,7 +54,7 @@
                 @endscope
                 @scope('cell_status', $appointment)
                     @if ($appointment->status === 'Confirmado')
-                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5" />
+                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-indigo-800 bg-indigo-100" />
                     @endif
                     @if ($appointment->status === 'Em espera')
                         <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-yellow-800 bg-yellow-100" />
@@ -65,13 +67,35 @@
                     @endif
                 @endscope
                 @scope('actions', $appointment)
-                <div class="flex">
-                    <x-button icon="o-pencil-square" link="#" spinner
-                        tooltip-left="Editar" class="px-2 text-indigo-500 btn-ghost btn-sm" />
+                <div class="flex items-center justify-end ">
+                    @switch($appointment->status)
+                        @case('Confirmado')
+                            <x-button label="Receber" tooltip="Receber assistido" spinner class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
+                            <x-button icon="o-trash" @click="$wire.deleteModalConfirmation = true"
+                                wire:click="setIdToDelete({{ $appointment['id'] }})" spinner tooltip-left="Excluir agendamento"
+                                class="px-2 text-red-500 btn-ghost btn-sm" />
+                            @break
 
-                    <x-button icon="o-trash" @click="$wire.deleteModalConfirmation = true"
-                        wire:click="setIdToDelete({{ $appointment['id'] }})" spinner tooltip-left="Excluir"
-                        class="px-2 text-red-500 btn-ghost btn-sm" />
+                        @case('Em espera')
+                            <x-button label="Atender" tooltip="Atender assistido" spinner class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
+                            <x-button icon="o-trash" class="px-2 text-red-500 opacity-50 btn-ghost btn-sm" />
+                            @break
+
+                        @case('Atendido')
+                            <x-button
+                                label="Ver Atend."
+                                tooltip="Ver atendimento"
+                                spinner
+                                class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
+                            <x-button icon="o-trash" class="px-2 text-red-500 opacity-50 btn-ghost btn-sm" />
+                            @break
+
+                        @default
+                            <x-button label="Receber" class="px-2 mr-1 text-indigo-500 bg-white border-indigo-500 opacity-50 btn-sm" />
+                            <x-button icon="o-trash" class="px-2 text-red-500 opacity-50 btn-ghost btn-sm" />
+                    @endswitch
+
+
                 </div>
                 @endscope
             </x-table>
@@ -100,7 +124,6 @@
             <x-select label="Modo de Atendimento" wire:model.lazy="selectedMode" :options="$modes" placeholder="Todos" class="text-base" icon="o-map" />
         </div>
 
-
         <x-slot:actions>
             <x-button label="Limpar" icon="o-x-mark" wire:click="clear" spinner class="text-base" />
             <x-button label="Filtrar" class="text-base btn-primary" icon="o-check" @click="$wire.drawer = false" />
@@ -114,7 +137,6 @@
 
         <x-slot:actions>
             <x-button label="Cancelar" @click="$wire.deleteModalConfirmation = false" />
-
             <x-button label="Excluir" wire:click="delete({{ $idToDelete }})"
                 class="bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 btn-primary" />
         </x-slot:actions>
