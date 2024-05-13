@@ -31,7 +31,9 @@ class Index extends Component
     public string $selectedMode = '';
 
     public ?int $idToDelete = null;
+    public ?int $appointmentId = null;
     public bool $deleteModalConfirmation = false;
+    public bool $receivePatientModalConfirmation = false;
     public bool $drawer = false;
     public array $sortBy = ['column' => 'id', 'direction' => 'desc'];
 
@@ -71,22 +73,12 @@ class Index extends Component
     }
 
 
-    // Table headers
-    public function headers(): array
+    public function receivePatient(Appointment $appointment): void
     {
-        $headers = [
-            ['key' => 'patient_name', 'label' => 'Assistido', 'class' => 'w-64 h-16 whitespace-nowrap'],
-            ['key' => 'treatment_type_name', 'label' => 'Tipo de Atendimento', 'class' => 'whitespace-nowrap'],
-            ['key' => 'treatment_mode', 'label' => 'Modo de Atendimento', 'class' => 'whitespace-nowrap'],
-            ['key' => 'status', 'label' => 'Status', 'class' => 'whitespace-nowrap'],
-        ];
-
-        if (empty($this->date)) {
-            $newHeader = ['key' => 'date', 'label' => 'Data', 'class' => 'whitespace-nowrap'];
-            array_splice($headers, 2, 0, [$newHeader]);
-        }
-
-        return $headers;
+        $appointment->status = 'Em espera';
+        $appointment->save();
+        
+        $this->receivePatientModalConfirmation = false;
     }
 
 
@@ -106,9 +98,22 @@ class Index extends Component
     }
 
 
-    public function setIdToDelete(int $id): void
+    // Table headers
+    public function headers(): array
     {
-        $this->idToDelete = $id;
+        $headers = [
+            ['key' => 'patient_name', 'label' => 'Assistido', 'class' => 'w-64 h-16 whitespace-nowrap'],
+            ['key' => 'treatment_type_name', 'label' => 'Tipo de Atendimento', 'class' => 'whitespace-nowrap'],
+            ['key' => 'treatment_mode', 'label' => 'Modo de Atendimento', 'class' => 'whitespace-nowrap'],
+            ['key' => 'status', 'label' => 'Status', 'class' => 'whitespace-nowrap'],
+        ];
+
+        if (empty($this->date)) {
+            $newHeader = ['key' => 'date', 'label' => 'Data', 'class' => 'whitespace-nowrap'];
+            array_splice($headers, 2, 0, [$newHeader]);
+        }
+
+        return $headers;
     }
 
 

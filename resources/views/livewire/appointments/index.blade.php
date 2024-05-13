@@ -70,9 +70,16 @@
                 <div class="flex items-center justify-end ">
                     @switch($appointment->status)
                         @case('Confirmado')
-                            <x-button label="Receber" tooltip="Receber assistido" spinner class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
+                            <x-button
+                                label="Receber"
+                                tooltip="Receber assistido"
+                                wire:click="$set('appointmentId', {{ $appointment->id }})"
+                                @click="$wire.receivePatientModalConfirmation = true"
+                                spinner
+                                class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
+
                             <x-button icon="o-trash" @click="$wire.deleteModalConfirmation = true"
-                                wire:click="setIdToDelete({{ $appointment['id'] }})" spinner tooltip-left="Excluir agendamento"
+                                wire:click="$set('idToDelete', {{ $appointment->id }})" spinner tooltip-left="Excluir agendamento"
                                 class="px-2 text-red-500 btn-ghost btn-sm" />
                             @break
 
@@ -138,7 +145,19 @@
         <x-slot:actions>
             <x-button label="Cancelar" @click="$wire.deleteModalConfirmation = false" />
             <x-button label="Excluir" wire:click="delete({{ $idToDelete }})"
-                class="bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 btn-primary" />
+                class="text-white bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 btn-primary" />
+        </x-slot:actions>
+    </x-modal>
+
+
+    {{-- RECEIVE PATIENT CONFIRMATION MODAL --}}
+    <x-modal wire:model="receivePatientModalConfirmation" title="Tem certeza?">
+        <p>Confirma que o assistido chegou para o atendimento?</p>
+
+        <x-slot:actions>
+            <x-button label="Cancelar" @click="$wire.receivePatientModalConfirmation = false" />
+            <x-button label="Confirmar" wire:click="receivePatient({{ $appointmentId }})"
+                class="btn-primary" />
         </x-slot:actions>
     </x-modal>
 
