@@ -30,6 +30,9 @@ class Index extends Component
     #[Session(key: 'modeFilter')]
     public string $selectedMode = '';
 
+    #[Session(key: 'RowsPerPage')]
+    public int $perPage = 15;
+
     public ?int $idToDelete = null;
     public ?int $appointmentId = null;
     public ?Appointment $appointmentToView = null;
@@ -74,7 +77,7 @@ class Index extends Component
             ->when($this->selectedType, fn (Builder $q) => $q->where('treatment_type_id', '=', $this->selectedType))
             ->when($this->selectedMode, fn (Builder $q) => $q->where('treatment_mode', '=', $this->selectedMode))
             ->orderBy(...array_values($this->sortBy))
-            ->paginate(15);
+            ->paginate($this->perPage);
     }
 
 
