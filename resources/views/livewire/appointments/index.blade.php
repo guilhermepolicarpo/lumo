@@ -43,9 +43,11 @@
         @endif
 
         @if ($appointments->count() !== 0)
-
+            @php
+                $row_decoration = ['h-16' => fn() => true];
+            @endphp
             {{-- TABLE --}}
-            <x-table :headers="$headers" :rows="$appointments" :sort-by="$sortBy" link="#" with-pagination class="text-base">
+            <x-table :headers="$headers" :rows="$appointments" :sort-by="$sortBy" :row-decoration="$row_decoration" @row-click="$wire.getAppointment($event.detail.id), $wire.appointmentViewModal = true" with-pagination class="text-base">
                 @scope('cell_patient_name', $appointment)
                     {{ Str::words($appointment->patient->name, 4, '...') }}
                 @endscope
@@ -101,8 +103,6 @@
                             <x-button label="Receber" class="px-2 mr-1 text-indigo-500 bg-white border-indigo-500 opacity-50 btn-sm" />
                             <x-button icon="o-trash" class="px-2 text-red-500 opacity-50 btn-ghost btn-sm" />
                     @endswitch
-
-
                 </div>
                 @endscope
             </x-table>
@@ -161,4 +161,25 @@
         </x-slot:actions>
     </x-modal>
 
+
+    {{-- VIEW APPOINTMENT MODAL --}}
+    <x-modal wire:model="appointmentViewModal" title="Detalhes do agendamento" separator>
+        <x-loading class="text-primary loading-lg" wire:loading wire:target="getAppointment" />
+
+        <div wire:loading.class="hidden">
+            @if ($appointmentToView)
+                <p><strong>Assistido</strong></p>
+                <p><x-icon name="o-user" /> {{ $appointmentToView->patient->name }}</p>
+                <p><x-icon name="o-map-pin" /> {{ $appointmentToView->patient->address->address }}</p>
+
+            @endif
+        </div>
+
+        <x-slot:actions>
+            <x-button
+                label="Fechar"
+                @click="$wire.appointmentViewModal = false"
+                class="btn-primary" />
+        </x-slot:actions>
+    </x-modal>
 </div>

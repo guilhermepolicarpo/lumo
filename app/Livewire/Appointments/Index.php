@@ -32,9 +32,14 @@ class Index extends Component
 
     public ?int $idToDelete = null;
     public ?int $appointmentId = null;
+    public ?Appointment $appointmentToView = null;
+
+    // Modals
+    public bool $appointmentViewModal = false;
     public bool $deleteModalConfirmation = false;
     public bool $receivePatientModalConfirmation = false;
     public bool $drawer = false;
+
     public array $sortBy = ['column' => 'id', 'direction' => 'desc'];
 
 
@@ -73,11 +78,17 @@ class Index extends Component
     }
 
 
+    public function getAppointment($id): void
+    {
+        $this->appointmentToView = Appointment::with('patient.address', 'treatmentType')->find($id);
+    }
+
+
     public function receivePatient(Appointment $appointment): void
     {
         $appointment->status = 'Em espera';
         $appointment->save();
-        
+
         $this->receivePatientModalConfirmation = false;
     }
 
@@ -102,7 +113,7 @@ class Index extends Component
     public function headers(): array
     {
         $headers = [
-            ['key' => 'patient_name', 'label' => 'Assistido', 'class' => 'w-64 h-16 whitespace-nowrap'],
+            ['key' => 'patient_name', 'label' => 'Assistido', 'class' => 'w-64  whitespace-nowrap'],
             ['key' => 'treatment_type_name', 'label' => 'Tipo de Atendimento', 'class' => 'whitespace-nowrap'],
             ['key' => 'treatment_mode', 'label' => 'Modo de Atendimento', 'class' => 'whitespace-nowrap'],
             ['key' => 'status', 'label' => 'Status', 'class' => 'whitespace-nowrap'],

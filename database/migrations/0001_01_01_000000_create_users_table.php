@@ -36,6 +36,14 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+
+        // create a user with admin privileges
+        \App\Models\User::create([
+            'name' => 'Admin',
+            'email' => 'guilhermepolicarpo@outlook.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('admin'),
+        ]);
     }
 
     /**
