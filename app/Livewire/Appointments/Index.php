@@ -30,7 +30,7 @@ class Index extends Component
     #[Session(key: 'modeFilter')]
     public string $selectedMode = '';
 
-    #[Session(key: 'RowsPerPage')]
+    #[Session(key: 'appointmentsPerPage')]
     public int $perPage = 15;
 
     public ?int $idToDelete = null;

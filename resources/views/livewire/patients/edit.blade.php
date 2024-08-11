@@ -6,6 +6,7 @@
         </x-slot:actions>
     </x-header>
 
+
     <x-card>
         <x-form wire:submit="save">
 
@@ -47,7 +48,6 @@
 
             {{-- Details section --}}
             <hr class="my-5" />
-
             <div class="grid-cols-6 lg:grid">
                 <div class="md:col-span-2">
                     <x-header title="Endereço" subtitle="Endereço do assistido" size="text-1xl" />
@@ -92,10 +92,33 @@
             </div>
 
             <x-slot:actions>
-                <x-button label="Cancelar" link="{{ route('patients.index') }}" class="text-base" />
-                <x-button label="Atualizar" icon="o-paper-airplane" spinner="save" type="submit" class="text-base btn-primary" />
+                <div class="flex justify-between w-full">
+                    <x-button
+                        label="Excluir"
+                        icon="o-trash"
+                        @click="$wire.deleteModalConfirmation = true"
+                        class="text-base btn-error" />
+
+                    <div class="flex gap-3">
+                        <x-button label="Cancelar" link="{{ route('patients.index') }}" class="text-base" />
+                        <x-button label="Atualizar" icon="o-paper-airplane" spinner="save" type="submit" class="text-base btn-primary" />
+                    </div>
+                </div>
+
             </x-slot:actions>
 
         </x-form>
     </x-card>
+
+
+    {{-- DELETE CONFIRMATION MODAL --}}
+    <x-modal wire:model="deleteModalConfirmation" title="Tem certeza?">
+        <p>Tem certeza que deseja excluir este assistido?</p>
+
+        <x-slot:actions>
+            <x-button label="Cancelar" @click="$wire.deleteModalConfirmation = false" />
+
+            <x-button label="Excluir" wire:click="delete({{ $patient->id }})" spinner="delete" class="text-base btn-error" />
+        </x-slot:actions>
+    </x-modal>
 </div>

@@ -17,9 +17,11 @@ class Edit extends Component
     use Toast;
 
     public Patient $patient;
+    public ?int $patientIdToDelete;
     public array $patientState;
     public array $addressState;
     public Collection $states;
+    public bool $deleteModalConfirmation = false;
 
 
     public function mount(): void
@@ -120,6 +122,31 @@ class Edit extends Component
             'addressState.state.min' => 'O estado deve ter pelo menos 2 caracteres',
             'addressState.state.max' => 'O estado deve ter no maximo 2 caracteres',
         ];
+    }
+
+
+    // Delete action
+    public function delete(): void
+    {
+        try {
+            DB::beginTransaction();
+
+            if ($this->patient->address) {
+                $this->patient->address()->delete();
+            } else {
+                $this->patient->delete();
+            }
+
+            $this->deleteModalConfirmation = false;
+
+            DB::commit();
+
+            $this->warning("Assistido deletado.", "O assistido {$this->patient->name} foi deletado", redirectTo: route('patients.index'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->deleteModalConfirmation = false;
+            $this->error("Ocorreu um erro.", "Não foi possível deletar o assistido {$this->patient->name}, pois já existem atendimentos registrados para ele.");
+        }
     }
 
 

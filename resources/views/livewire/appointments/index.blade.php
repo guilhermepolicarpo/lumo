@@ -1,4 +1,7 @@
 <div>
+    @php
+        $row_decoration = ['h-16' => fn() => true];
+    @endphp
 
     {{-- HEADER --}}
     <x-header title="Agendamentos" size="text-2xl" progress-indicator>
@@ -17,8 +20,8 @@
     </x-header>
 
 
-
     <x-card>
+
         {{-- APPLIED FILTERS --}}
         @if ($date || $search || $selectedMode || $selectedType || $selectedStatus)
             <div class="flex items-center gap-2 mb-3">
@@ -43,68 +46,54 @@
         @endif
 
 
-            @php
-                $row_decoration = ['h-16' => fn() => true];
-            @endphp
-            {{-- TABLE --}}
-            <x-table
-                :headers="$headers"
-                :rows="$appointments"
-                :sort-by="$sortBy"
-                :row-decoration="$row_decoration"
-                @row-click="$wire.getAppointment($event.detail.id), $wire.appointmentViewModal = true"
-                with-pagination
-                per-page="perPage"
-                :per-page-values="[5, 10, 15, 20, 25, 50, 100]"
-                class="text-base">
+        {{-- TABLE --}}
+        <x-table
+            :headers="$headers"
+            :rows="$appointments"
+            :sort-by="$sortBy"
+            :row-decoration="$row_decoration"
+            @row-click="$wire.getAppointment($event.detail.id), $wire.appointmentViewModal = true"
+            with-pagination
+            per-page="perPage"
+            :per-page-values="[5, 10, 15, 20, 25, 50, 100]"
+            class="text-base">
 
-                <x-slot:empty>
-                    <x-icon name="o-calendar" label="Nenhum agendamento encontrado." />
-                </x-slot:empty>
+            <x-slot:empty>
+                <x-icon name="o-calendar" label="Nenhum agendamento encontrado." />
+            </x-slot:empty>
 
-                @scope('cell_patient_name', $appointment)
-                    {{ Str::words($appointment->patient->name, 4, '...') }}
-                @endscope
+            @scope('cell_patient_name', $appointment)
+                {{ Str::words($appointment->patient->name, 4, '...') }}
+            @endscope
 
-                @scope('cell_date', $appointment)
-                    {{ now()->parse($appointment->date)->format('d/m/Y') }}
-                @endscope
+            @scope('cell_date', $appointment)
+                {{ now()->parse($appointment->date)->format('d/m/Y') }}
+            @endscope
 
-                @scope('cell_status', $appointment)
-                    @if ($appointment->status === 'Confirmado')
-                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-indigo-800 bg-indigo-100" />
-                    @endif
-                    @if ($appointment->status === 'Em espera')
-                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-yellow-800 bg-yellow-100" />
-                    @endif
-                    @if ($appointment->status === 'Atendido')
-                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-green-800 bg-green-100" />
-                    @endif
-                    @if ($appointment->status === 'Faltou')
-                        <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-red-800 bg-red-100" />
-                    @endif
-                @endscope
+            @scope('cell_status', $appointment)
+                @if ($appointment->status === 'Confirmado')
+                    <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-indigo-800 bg-indigo-100" />
+                @endif
+                @if ($appointment->status === 'Em espera')
+                    <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-yellow-800 bg-yellow-100" />
+                @endif
+                @if ($appointment->status === 'Atendido')
+                    <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-green-800 bg-green-100" />
+                @endif
+                @if ($appointment->status === 'Faltou')
+                    <x-badge value="{{ $appointment->status }}" class="text-xs font-semibold leading-5 text-red-800 bg-red-100" />
+                @endif
+            @endscope
 
-                @scope('actions', $appointment)
+            @scope('actions', $appointment)
                 <div class="flex items-center justify-end ">
                     @switch($appointment->status)
-                        @case('Confirmado')
+                        @case('Em espera')
                             <x-button
-                                label="Receber"
-                                tooltip="Receber assistido"
-                                wire:click.stop="$set('appointmentId', {{ $appointment->id }})"
-                                @click="$wire.receivePatientModalConfirmation = true"
+                                label="Atender"
+                                tooltip="Atender assistido"
                                 spinner
                                 class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
-
-                            <x-button icon="o-trash" @click="$wire.deleteModalConfirmation = true"
-                                wire:click.stop="$set('idToDelete', {{ $appointment->id }})" spinner tooltip-left="Excluir agendamento"
-                                class="px-2 text-red-500 btn-ghost btn-sm" />
-                            @break
-
-                        @case('Em espera')
-                            <x-button label="Atender" tooltip="Atender assistido" spinner class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
-                            <x-button icon="o-trash" class="px-2 text-red-500 opacity-50 btn-ghost btn-sm" />
                             @break
 
                         @case('Atendido')
@@ -113,16 +102,36 @@
                                 tooltip="Ver atendimento"
                                 spinner
                                 class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
-                            <x-button icon="o-trash" class="px-2 text-red-500 opacity-50 btn-ghost btn-sm" />
                             @break
 
                         @default
-                            <x-button label="Receber" class="px-2 mr-1 text-indigo-500 bg-white border-indigo-500 opacity-50 btn-sm" />
-                            <x-button icon="o-trash" class="px-2 text-red-500 opacity-50 btn-ghost btn-sm" />
+                            <x-button
+                                label="Receber"
+                                tooltip="Receber assistido"
+                                wire:click.stop="$set('appointmentId', {{ $appointment->id }})"
+                                @click="$wire.receivePatientModalConfirmation = true"
+                                spinner
+                                class="px-2 mr-1 text-indigo-500 border-indigo-500 btn-outline btn-sm" />
                     @endswitch
+
+                    <x-dropdown>
+                        <x-slot:trigger>
+                            <x-button icon="o-ellipsis-vertical" class="px-1 btn-sm" tooltip="Opções" />
+                        </x-slot:trigger>
+
+                        <x-menu-item title="Editar" icon="o-pencil-square" wire:click.stop="$set('idToDelete', {{ $appointment->id }})" spinner />
+                        <x-menu-item title="Deletar" icon="o-trash" wire:click.stop="$set('idToDelete', {{ $appointment->id }})" spinner />
+                    </x-dropdown>
+
+                    <x-button
+                        icon="o-trash" @click="$wire.deleteModalConfirmation = true"
+                        wire:click.stop="$set('idToDelete', {{ $appointment->id }})"
+                        spinner
+                        tooltip-left="Excluir agendamento"
+                        class="px-2 text-red-500 btn-ghost btn-sm" />
                 </div>
-                @endscope
-            </x-table>
+            @endscope
+        </x-table>
     </x-card>
 
 

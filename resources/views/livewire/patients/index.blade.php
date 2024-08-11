@@ -22,31 +22,57 @@
 
     {{-- TABLE --}}
     <x-card>
-        @if ($patients->count() == 0)
-            <p>Nenhum assistido encontrado.</p>
-        @else
-        <x-table :headers="$headers" :rows="$patients" :sort-by="$sortBy" link="patients/{id}/edit" with-pagination class="text-base">
+
+        <x-table
+            :headers="$headers"
+            :rows="$patients"
+            :sort-by="$sortBy"
+            link="patients/{id}/edit"
+            with-pagination
+            per-page="perPage"
+            :per-page-values="[10, 20, 25, 50, 100]"
+            class="text-base">
+
+            <x-slot:empty>
+                <x-icon name="o-x-circle" label="Nenhum assistido encontrado." />
+            </x-slot:empty>
+
+            @scope('cell_name', $patient)
+               <div>
+                    {{ $patient->name }}
+                    <div class="text-sm text-gray-500">
+                        @if (!empty($patient->email))
+                           {{ $patient->email }} <br/>
+                        @endif
+                        @if (!empty($patient->phone))
+                            {{ $patient->phone }}
+                        @endif
+                    </div>
+               </div>
+            @endscope
+
             @scope('cell_address', $patient)
                 <div>
-                    @if(isset($patient->address->address))
+                    @if(!empty($patient->address->address))
                         {{ $patient->address->address }},
                     @endif
-                    @if(isset($patient->address->number))
+                    @if(!empty($patient->address->number))
                         {{ $patient->address->number }} -
                     @endif
-                    @if(isset($patient->address->neighborhood))
-                        {{ Str::limit($patient->address->neighborhood, 15) }}
+                    @if(!empty($patient->address->neighborhood))
+                        {{ $patient->address->neighborhood, 15 }}
                     @endif
                 </div>
                 <div class="text-gray-500">
-                    @if (isset($patient->address->city))
+                    @if (!empty($patient->address->city))
                         {{ $patient->address->city }} -
                     @endif
-                    @if (isset($patient->address->state))
+                    @if (!empty($patient->address->state))
                         {{ $patient->address->state }}
                     @endif
                 </div>
             @endscope
+
             @scope('cell_birth', $patient)
                 @php
                     $ageDifference = now()->parse($patient->birth)->diff(now());
@@ -64,32 +90,17 @@
                 </div>
             @endscope
             @scope('actions', $patient)
-                <div class="flex">
-                    <x-button
-                        icon="o-document-text"
-                        link="#"
-                        spinner
-                        tooltip-left="Ver atendimentos"
-                        class="px-2 text-indigo-500 btn-ghost btn-sm" />
+                <x-dropdown>
+                    <x-slot:trigger>
+                        <x-button icon="o-ellipsis-horizontal" class="px-2 btn-sm" />
+                    </x-slot:trigger>
 
-                    <x-button
-                        icon="o-pencil-square"
-                        link="{{ route('patients.edit', $patient) }}"
-                        spinner
-                        tooltip-left="Editar"
-                        class="px-2 text-indigo-500 btn-ghost btn-sm" />
-
-                    <x-button
-                        icon="o-trash"
-                        @click="$wire.deleteModalConfirmation = true"
-                        wire:click="setPatientIdToDelete({{ $patient['id'] }})"
-                        spinner
-                        tooltip-left="Excluir"
-                        class="px-2 text-red-500 btn-ghost btn-sm" />
-                </div>
+                    <x-menu-item title="Ver atendimentos" icon="o-document-text" />
+                    <x-menu-item title="Editar" icon="o-pencil-square" link="{{ route('patients.edit', $patient) }}" />
+                    <x-menu-item title="Excluir" icon="o-trash" @click="$wire.deleteModalConfirmation = true" wire:click="setPatientIdToDelete({{ $patient['id'] }})" />
+                </x-dropdown>
             @endscope
         </x-table>
-        @endif
     </x-card>
 
 
@@ -105,7 +116,7 @@
             <x-button
                 label="Excluir"
                 wire:click="delete({{ $patientIdToDelete }})"
-                class="bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 btn-primary" />
+                class="text-base btn-error" />
         </x-slot:actions>
     </x-modal>
 

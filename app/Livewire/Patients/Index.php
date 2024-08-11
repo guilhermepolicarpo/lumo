@@ -2,18 +2,20 @@
 
 namespace App\Livewire\Patients;
 
-use App\Models\Patient;
 use Mary\Traits\Toast;
+use App\Models\Patient;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Session;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class Index extends Component
 {
 
-    use Toast,WithPagination;
+    use Toast, WithPagination;
 
     public string $search = '';
 
@@ -22,6 +24,9 @@ class Index extends Component
     public bool $deleteModalConfirmation = false;
 
     public array $sortBy = ['column' => 'id', 'direction' => 'desc'];
+
+    #[Session('patientsPerPage')]
+    public int $perPage = 10;
 
 
 
@@ -37,12 +42,12 @@ class Index extends Component
 
     public function patients(): LengthAwarePaginator
     {
-        return Patient::select('id', 'name', 'birth', 'address_id')
+        return Patient::select('id', 'name', 'email', 'phone', 'birth', 'address_id')
             ->with('address')
             ->withAggregate('address', 'address')
-            ->when($this->search, fn (Builder $q) => $q->where('name', 'like', "%$this->search%"))
+            ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->orderBy(...array_values($this->sortBy))
-            ->paginate(10);
+            ->paginate($this->perPage);
     }
 
 
@@ -50,7 +55,7 @@ class Index extends Component
     public function headers(): array
     {
         return [
-            ['key' => 'name', 'label' => 'Nome', 'class' => 'w-80 h-16 '],
+            ['key' => 'name', 'label' => 'Nome'],
             ['key' => 'address', 'label' => 'Endereço', 'sortBy' => 'address_address', 'class' => 'whitespace-nowrap'],
             ['key' => 'birth', 'label' => 'Idade', 'class' => 'whitespace-nowrap'],
         ];
@@ -60,21 +65,25 @@ class Index extends Component
     // Delete action
     public function delete(Patient $patient): void
     {
-        if ($patient->address) {
-            $deleted = $patient->address()->delete();
+        try {
+            DB::beginTransaction();
 
-        } else {
-            $deleted = $patient->delete();
+            if ($patient->address) {
+                $deleted = $patient->address()->delete();
+            } else {
+                $patient->delete();
+            }
+
+            $this->deleteModalConfirmation = false;
+
+            DB::commit();
+
+            $this->warning("Assistido deletado.", "O assistido $patient->name foi deletado");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->deleteModalConfirmation = false;
+            $this->error("Ocorreu um erro.", "Não foi possível deletar o assistido $patient->name, pois já existem atendimentos registrados para ele.");
         }
-
-        $this->deleteModalConfirmation = false;
-
-        if (!$deleted) {
-            $this->error("Ocorreu um erro.", "Não foi possível deletar o assistido $patient->name.");
-            return;
-        }
-
-        $this->warning("Assistido deletado.", "O assistido $patient->name foi deletado");
     }
 
 
